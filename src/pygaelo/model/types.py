@@ -20,3 +20,7 @@ class QCDecision(Enum):
     ACCEPTED = 'Accepted'
     REFUSED = 'Refused'
     CORRECTIVE_ACTION_ASKED = 'Corrective Action Asked'
+
+class VisitStatus(Enum):
+    DONE = 'Done'
+    NOT_DONE = 'Not Done'

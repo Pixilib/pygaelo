@@ -2,8 +2,7 @@ from typing import List
 from tusclient import client
 import requests
 
-from .model.types import Patient
-from .model.types import QCDecision
+from .model.types import Patient, QCDecision, VisitStatus
 
 
 class GaelOClient:
@@ -54,7 +53,7 @@ class GaelOClient:
         response.raise_for_status()
         return response.json()
 
-    def create_visit(self, study_name: str, role: str, visit_type_id: int, patient_id: str, statusDone: str, visit_date: str | None, reason_for_not_done: str | None = None) -> dict:
+    def create_visit(self, study_name: str, role: str, visit_type_id: int, patient_id: str, statusDone: VisitStatus, visit_date: str | None, reason_for_not_done: str | None = None) -> dict:
         payload = {
             "patientId": patient_id,
             "visitDate": visit_date,
@@ -85,12 +84,13 @@ class GaelOClient:
         response.raise_for_status()
         return response.json()
 
-    def upload_dicoms(self, zip_path: str):
+    def upload_dicoms(self, zip_path: str) -> str:
         my_client = client.TusClient(self.__get_url()+'/api/tus',
                                      headers=self.__get_headers())
         uploader = my_client.uploader(zip_path, chunk_size=2000000)
         uploader.upload()
-        return uploader.url
+        upload_id = uploader.url.split('/')[-1]
+        return upload_id
 
     def validate_dicom_upload(self, visit_id: int, original_orthanc_id: str, tus_upload_ids: list[str], number_of_uploaded_instances: int):
         payload = {
