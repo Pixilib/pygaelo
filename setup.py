@@ -11,7 +11,7 @@ setup(
     name="pygaelo",
     version="0.0.1",
     author="Pixilib",
-    url="https://github.com/Pixilib/GaelO_Python_Client",
+    url="https://github.com/Pixilib/pygaelo",
     python_requires="~=3.12",
     description="Librairie to communicate with GaelO APIs",
     packages=find_packages(where='src'),    # List of all python modules to be installed
