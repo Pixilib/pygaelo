@@ -1,2 +1,2 @@
-# GaelO_Python_Client
+# pygaelo
 A python client to interact with GaelO Apis
