@@ -121,7 +121,7 @@ class GaelOClient:
             "formQcComment": from_qc_comment
         }
 
-        response = requests.post(
+        response = requests.patch(
             '/api/visits/' + visit_id + '/quality-control?studyName=' + study_name, json=payload)
         response.raise_for_status()
         return response.json()
