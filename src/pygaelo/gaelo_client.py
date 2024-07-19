@@ -122,7 +122,7 @@ class GaelOClient:
         }
 
         response = requests.patch(
-            '/api/visits/' + visit_id + '/quality-control?studyName=' + study_name, json=payload)
+            self.__get_url()+'/api/visits/' + str(visit_id) + '/quality-control?studyName=' + str(study_name), json=payload)
         response.raise_for_status()
         return response.json()
 
