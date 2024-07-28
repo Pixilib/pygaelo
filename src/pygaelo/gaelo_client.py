@@ -122,9 +122,8 @@ class GaelOClient:
         }
 
         response = requests.patch(
-            self.__get_url()+'/api/visits/' + str(visit_id) + '/quality-control?studyName=' + str(study_name), json=payload)
+            self.__get_url()+'/api/visits/' + str(visit_id) + '/quality-control?studyName=' + str(study_name), headers=self.__get_headers(), json=payload)
         response.raise_for_status()
-        return response.json()
 
     def get_user_id(self) -> int | None:
         return self.user_id
