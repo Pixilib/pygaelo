@@ -112,7 +112,7 @@ class GaelOClient:
         response.raise_for_status()
         return response.json()
 
-    def update_quality_control(self, visit_id: int, study_name: str, state_qc: QCDecision, image_qc_validation: bool, form_qc_validation: bool, image_qc_comment: str, from_qc_comment: str):
+    def update_quality_control(self, visit_id: int, study_name: str, state_qc: QCDecision, image_qc_validation: bool, form_qc_validation: bool, image_qc_comment: str|None, from_qc_comment: str|None):
         payload = {
             "stateQc": state_qc,
             "imageQc": image_qc_validation,

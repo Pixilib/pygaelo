@@ -66,3 +66,4 @@ class TestUploadDicoms(unittest.TestCase):
                 self.visit_id, orthanc_id, [tus_id], len(instances))
             self.gaelo_apis.create_investigator_form(
                 self.visit_id, {"comments": "abc"}, True)
+            self.gaelo_apis.update_quality_control(self.visit_id, 'TEST', 'Accepted', True, True, None, None)
