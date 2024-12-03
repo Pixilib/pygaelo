@@ -49,7 +49,7 @@ class TestUploadDicoms(unittest.TestCase):
         
         #Create Visit (Visit status : Done or Not Done)
         answer = gaelo_apis.create_visit(
-            'TEST', 'Investigator', creatable_visit_type[0]['id'], '170000' + str(patient_code), 'Done', '2024-10-10')
+            'TEST', 'Investigator', creatable_visit_type[0]['id'], '170000' + str(patient_code), 'Done', '2024-12-31')
         #store visit Id
         self.visit_id = answer.get('id')
 
