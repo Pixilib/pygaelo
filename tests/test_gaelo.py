@@ -43,7 +43,7 @@ class TestGaelO(unittest.TestCase):
             "firstname": patient_firstname,
             "lastname": patient_lastname,
             "centerCode": 0,
-            "registrationDate": "5-5-2022",
+            "registrationDate": "2022-12-31",
             "inclusionStatus": "Included",
             "birthDay": None,
             "birthMonth": None,
@@ -64,7 +64,7 @@ class TestGaelO(unittest.TestCase):
             "firstname": patient_firstname,
             "lastname": patient_lastname,
             "centerCode": 0,
-            "registrationDate": "5-5-2022",
+            "registrationDate": "2022-12-31",
             "inclusionStatus": "Included",
             "birthDay": None,
             "birthMonth": None,
@@ -81,5 +81,5 @@ class TestGaelO(unittest.TestCase):
         creatable_visit_type = [
             visit for visit in creatable_visits_types if visit.get('name') == "CT0"]
         answer = self.gaelo_apis.create_visit(
-            'TEST', 'Investigator', creatable_visit_type[0]['id'], '170000' + str(patient_code), 'Done', '2024-10-10')
+            'TEST', 'Investigator', creatable_visit_type[0]['id'], '170000' + str(patient_code), 'Done', '2024-12-31')
         self.assertIsInstance(answer, dict)
