@@ -25,7 +25,7 @@ class TestUploadDicoms(unittest.TestCase):
             "firstname": patient_firstname,
             "lastname": patient_lastname,
             "centerCode": 0,
-            "registrationDate": "5-5-2022",
+            "registrationDate": "2022-12-30",
             "inclusionStatus": "Included",
             "birthDay": None,
             "birthMonth": None,
