@@ -52,6 +52,24 @@ class GaelOClient:
             self.__get_url()+'/api/studies/'+study_name+'/visits' + query_params, headers=self.__get_headers())
         response.raise_for_status()
         return response.json()
+    # Atester
+    def get_dicoms_from_visit(self, visit_id: int, role: str, study_name: str) -> dict:
+        response = requests.get(
+            self.__get_url()+'/api/visits/'+str(visit_id)+'/dicoms?role='+role + '&studyName=' + study_name, headers=self.__get_headers())
+        response.raise_for_status()
+        return response.json()
+    # Atester
+    def get_dicoms_files_from_visit(self, visit_id: int, role: str, study_name: str) -> requests.Response:
+        response = requests.get(
+            self.__get_url()+'/api/visits/'+str(visit_id)+'/dicoms/files?role='+role + '&studyName=' + study_name, headers=self.__get_headers())
+        response.raise_for_status()
+        return response
+    # Atester
+    def get_visits_from_study(self, study_name: str, role: str) -> dict:
+        response = requests.get(
+            self.__get_url()+'/api/visits/' + study_name + '/visits?role=' + role, headers=self.__get_headers())
+        response.raise_for_status()
+        return response.json()
 
     def create_visit(self, study_name: str, role: str, visit_type_id: int, patient_id: str, statusDone: VisitStatus, visit_date: str | None, reason_for_not_done: str | None = None) -> dict:
         payload = {
@@ -112,7 +130,7 @@ class GaelOClient:
         response.raise_for_status()
         return response.json()
 
-    def update_quality_control(self, visit_id: int, study_name: str, state_qc: QCDecision, image_qc_validation: bool, form_qc_validation: bool, image_qc_comment: str|None, from_qc_comment: str|None):
+    def update_quality_control(self, visit_id: int, study_name: str, state_qc: QCDecision, image_qc_validation: bool, form_qc_validation: bool, image_qc_comment: str | None, from_qc_comment: str | None):
         payload = {
             "stateQc": state_qc,
             "imageQc": image_qc_validation,
