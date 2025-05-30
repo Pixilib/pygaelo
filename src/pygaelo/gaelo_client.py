@@ -1,6 +1,7 @@
 from typing import List
 from tusclient import client
 import requests
+from urllib import parse
 
 from .model.types import Patient, QCDecision, VisitStatus
 
@@ -44,12 +45,16 @@ class GaelOClient:
         response.raise_for_status()
         return response.json()
 
-    def get_visits_from_study(self, study_name: str, visit_type_id: int | None = None) -> dict:
-        query_params = ''
+    def get_visits_from_study(self, study_name: str, visit_type_id: int | None = None, role :str|None = None) -> dict:
+        query_params = {}
         if (visit_type_id):
-            query_params = '?visitType=' + visit_type_id
+            query_params['visitType'] = visit_type_id
+        if(role):
+            query_params['role'] = role
+
+        query_string = parse.urlencode(query_params)
         response = requests.get(
-            self.__get_url()+'/api/studies/'+study_name+'/visits' + query_params, headers=self.__get_headers())
+            self.__get_url()+'/api/studies/'+study_name+'/visits' +'?'+ query_string, headers=self.__get_headers())
         response.raise_for_status()
         return response.json()
     # Atester
@@ -64,12 +69,6 @@ class GaelOClient:
             self.__get_url()+'/api/visits/'+str(visit_id)+'/dicoms/files?role='+role + '&studyName=' + study_name, headers=self.__get_headers())
         response.raise_for_status()
         return response
-    # Atester
-    def get_visits_from_study(self, study_name: str, role: str) -> dict:
-        response = requests.get(
-            self.__get_url()+'/api/visits/' + study_name + '/visits?role=' + role, headers=self.__get_headers())
-        response.raise_for_status()
-        return response.json()
 
     def create_visit(self, study_name: str, role: str, visit_type_id: int, patient_id: str, statusDone: VisitStatus, visit_date: str | None, reason_for_not_done: str | None = None) -> dict:
         payload = {

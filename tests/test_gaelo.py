@@ -27,7 +27,7 @@ class TestGaelO(unittest.TestCase):
         self.assertIsInstance(roles, list)
 
     def test_get_visit_from_study(self):
-        visits = self.gaelo_apis.get_visits_from_study('TEST')
+        visits = self.gaelo_apis.get_visits_from_study('TEST', None, 'Investigator')
         self.assertIsInstance(visits, list)
 
     def test_get_possible_upload_visit(self):
@@ -111,4 +111,5 @@ class TestGaelO(unittest.TestCase):
             visit for visit in creatable_visits_types if visit.get('name') == "CT0"]
         answer = self.gaelo_apis.create_visit(
             'TEST', 'Investigator', creatable_visit_type[0]['id'], '170000' + str(patient_code), 'Done', '2024-12-31')
-        self.gaelo_apis.delete_visit(answer.id, 'TEST', 'Supervisor', 'testing delete visit pyGaelO')
+        print(answer)
+        self.gaelo_apis.delete_visit(answer.get('id'), 'TEST', 'Supervisor', 'testing delete visit pyGaelO')
