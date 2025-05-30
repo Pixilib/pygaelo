@@ -143,6 +143,15 @@ class GaelOClient:
             self.__get_url()+'/api/visits/' + str(visit_id) + '/quality-control?studyName=' + str(study_name), headers=self.__get_headers(), json=payload)
         response.raise_for_status()
 
+    def delete_visit(self, visit_id:int, study_name :str, role :str, reason :str):
+        payload = {
+            "reason": reason
+        }
+
+        response = requests.delete(
+            self.__get_url()+'/api/visits/' + str(visit_id) + '?studyName=' + str(study_name) + '&role=' + str(role), headers=self.__get_headers(), json=payload)
+        response.raise_for_status()
+
     def get_user_id(self) -> int | None:
         return self.user_id
 
