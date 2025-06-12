@@ -66,7 +66,7 @@ class GaelOClient:
     # Atester
     def get_dicoms_files_from_visit(self, visit_id: int, role: str, study_name: str) -> requests.Response:
         response = requests.get(
-            self.__get_url()+'/api/visits/'+str(visit_id)+'/dicoms/files?role='+role + '&studyName=' + study_name, headers=self.__get_headers())
+            self.__get_url()+'/api/visits/'+str(visit_id)+'/dicoms/file?role='+role + '&studyName=' + study_name, headers=self.__get_headers())
         response.raise_for_status()
         return response
 
