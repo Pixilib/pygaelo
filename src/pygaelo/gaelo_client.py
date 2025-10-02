@@ -109,6 +109,28 @@ class GaelOClient:
         upload_id = uploader.url.split('/')[-1]
         return upload_id
 
+    def upload_wsi(self, wsi_path: str, series_description: str, series_number: str) -> str:
+        metadata = {
+            'seriesDescription': series_description,
+            'seriesNumber': series_number,
+        }
+        my_client = client.TusClient(
+            self.__get_url() + '/api/tus',
+            headers=self.__get_headers(),
+            metadata=metadata
+        )
+        uploader = my_client.uploader(wsi_path, chunk_size=2000000)
+        uploader.upload()
+        upload_id = uploader.url.split('/')[-1]
+        return upload_id
+    
+    def validate_wsi_upload(self,visit_id:int,  tus_upload_ids: str):
+        payload = {
+            "uploadedFileTusId": tus_upload_ids,
+        }
+        response = requests.post(self.__get_url()+'/api/visits/' + str(visit_id) + '/validate-wsi', headers=self.__get_headers(), json=payload)
+        response.raise_for_status()
+
     def validate_dicom_upload(self, visit_id: int, original_orthanc_id: str, tus_upload_ids: list[str], number_of_uploaded_instances: int):
         payload = {
             "originalOrthancId": original_orthanc_id,
@@ -142,7 +164,7 @@ class GaelOClient:
             self.__get_url()+'/api/visits/' + str(visit_id) + '/quality-control?studyName=' + str(study_name), headers=self.__get_headers(), json=payload)
         response.raise_for_status()
 
-    def delete_visit(self, visit_id:int, study_name :str, role :str, reason :str):
+    def delete_visit(self, visit_id: int, study_name: str, role: str, reason: str):
         payload = {
             "reason": reason
         }
