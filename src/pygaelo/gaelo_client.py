@@ -117,9 +117,8 @@ class GaelOClient:
         my_client = client.TusClient(
             self.__get_url() + '/api/tus',
             headers=self.__get_headers(),
-            metadata=metadata
         )
-        uploader = my_client.uploader(wsi_path, chunk_size=2000000)
+        uploader = my_client.uploader(wsi_path, chunk_size=2000000, metadata=metadata)
         uploader.upload()
         upload_id = uploader.url.split('/')[-1]
         return upload_id
