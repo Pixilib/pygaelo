@@ -2,6 +2,8 @@ from typing import List
 from tusclient import client
 import requests
 from urllib import parse
+import base64
+
 
 from .model.types import Patient, QCDecision, VisitStatus
 
@@ -111,9 +113,9 @@ class GaelOClient:
 
     def upload_wsi(self, wsi_path: str, series_description: str, series_number: str) -> str:
         metadata = {
-            'seriesDescription': series_description,
-            'seriesNumber': series_number,
-        }
+        'seriesDescription': base64.b64encode(series_description.encode()).decode(),
+        'seriesNumber': base64.b64encode(series_number.encode()).decode(),
+    }
         my_client = client.TusClient(
             self.__get_url() + '/api/tus',
             headers=self.__get_headers(),
