@@ -29,6 +29,13 @@ class GaelOClient:
         self.user_id = answer.get('id')
         return answer
 
+
+    def get_user_role_for_study(self, user_id, study_name, role):
+        response = requests.get(
+            self.__get_url()+'/api/users/'+str(user_id)+'/studies/'+study_name+'/roles/'+role, headers=self.__get_headers())
+        response.raise_for_status()
+        return response.json()
+
     def get_user_studies(self) -> dict:
         response = requests.get(
             self.__get_url()+'/api/users/'+str(self.user_id)+'/studies', headers=self.__get_headers())
