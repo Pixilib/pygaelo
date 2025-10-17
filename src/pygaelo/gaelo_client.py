@@ -120,8 +120,8 @@ class GaelOClient:
 
     def upload_wsi(self, wsi_path: str, series_description: str, series_number: str) -> str:
         metadata = {
-        'seriesDescription': base64.b64encode(series_description.encode()).decode(),
-        'seriesNumber': base64.b64encode(series_number.encode()).decode(),
+        'SeriesDescription': series_description,
+        'SeriesNumber': series_number,
     }
         my_client = client.TusClient(
             self.__get_url() + '/api/tus',
