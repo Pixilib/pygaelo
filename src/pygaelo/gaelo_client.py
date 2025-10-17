@@ -2,6 +2,8 @@ from typing import List
 from tusclient import client
 import requests
 from urllib import parse
+import base64
+
 
 from .model.types import Patient, QCDecision, VisitStatus
 
@@ -26,6 +28,13 @@ class GaelOClient:
         self.token = answer.get('access_token')
         self.user_id = answer.get('id')
         return answer
+
+
+    def get_user_role_for_study(self, user_id, study_name, role):
+        response = requests.get(
+            self.__get_url()+'/api/users/'+str(user_id)+'/studies/'+study_name+'/roles/'+role, headers=self.__get_headers())
+        response.raise_for_status()
+        return response.json()
 
     def get_user_studies(self) -> dict:
         response = requests.get(
@@ -109,6 +118,27 @@ class GaelOClient:
         upload_id = uploader.url.split('/')[-1]
         return upload_id
 
+    def upload_wsi(self, wsi_path: str, series_description: str, series_number: str) -> str:
+        metadata = {
+        'SeriesDescription': series_description,
+        'SeriesNumber': series_number,
+    }
+        my_client = client.TusClient(
+            self.__get_url() + '/api/tus',
+            headers=self.__get_headers(),
+        )
+        uploader = my_client.uploader(wsi_path, chunk_size=2000000, metadata=metadata)
+        uploader.upload()
+        upload_id = uploader.url.split('/')[-1]
+        return upload_id
+    
+    def validate_wsi_upload(self,visit_id:int,  tus_upload_ids: str):
+        payload = {
+            "uploadedFileTusId": tus_upload_ids,
+        }
+        response = requests.post(self.__get_url()+'/api/visits/' + str(visit_id) + '/validate-wsi', headers=self.__get_headers(), json=payload)
+        response.raise_for_status()
+
     def validate_dicom_upload(self, visit_id: int, original_orthanc_id: str, tus_upload_ids: list[str], number_of_uploaded_instances: int):
         payload = {
             "originalOrthancId": original_orthanc_id,
@@ -142,7 +172,7 @@ class GaelOClient:
             self.__get_url()+'/api/visits/' + str(visit_id) + '/quality-control?studyName=' + str(study_name), headers=self.__get_headers(), json=payload)
         response.raise_for_status()
 
-    def delete_visit(self, visit_id:int, study_name :str, role :str, reason :str):
+    def delete_visit(self, visit_id: int, study_name: str, role: str, reason: str):
         payload = {
             "reason": reason
         }
