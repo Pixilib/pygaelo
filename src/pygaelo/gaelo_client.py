@@ -78,6 +78,19 @@ class GaelOClient:
             self.__get_url()+'/api/visits/'+str(visit_id)+'/dicoms/file?role='+role + '&studyName=' + study_name, headers=self.__get_headers())
         response.raise_for_status()
         return response
+    
+    def get_dicoms_from_study(self, study_name: str, role: str, with_trashed_studies : bool, with_trashed_series :bool) -> requests.Response:
+        queries = {
+                'role' : role,
+                'studyName' : study_name,
+                'withTrashedStudies' : with_trashed_studies,
+                'withTrashedSeries' : with_trashed_series
+            }
+        query_string = parse.urlencode(queries)
+        response = requests.get(
+            self.__get_url()+'/api/studies/'+str(study_name)+'/dicom-studies?'+query_string, headers=self.__get_headers())
+        response.raise_for_status()
+        return response.json()
 
     def create_visit(self, study_name: str, role: str, visit_type_id: int, patient_id: str, statusDone: VisitStatus, visit_date: str | None, reason_for_not_done: str | None = None) -> dict:
         payload = {
